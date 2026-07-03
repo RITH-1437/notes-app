@@ -1,0 +1,16 @@
+using System.Security.Claims;
+
+namespace NotesApp.Api.Extensions;
+
+public static class ClaimsPrincipalExtensions
+{
+    public static Guid GetUserId(this ClaimsPrincipal user)
+    {
+        var userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (string.IsNullOrWhiteSpace(userId))
+            throw new UnauthorizedAccessException("User ID claim not found.");
+
+        return Guid.Parse(userId);
+    }
+}
