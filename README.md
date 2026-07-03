@@ -28,3 +28,14 @@ docs/
 ## Status
 
 🚧 Project initialization completed.
+
+## Features
+
+### Authentication
+- JWT Authentication
+- BCrypt Password Hashing
+- User Registration
+- User Login
+- Refresh Token
+- Logout
+- Swagger JWT Authorization
