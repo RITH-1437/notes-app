@@ -55,7 +55,7 @@ NotesApp/
 
 ## Completed
 
-### Authentication
+### 🔐 Authentication
 
 - JWT Authentication
 - BCrypt Password Hashing
@@ -65,7 +65,7 @@ NotesApp/
 - Logout
 - Swagger JWT Authorization
 
-### Notes
+### 📝 Notes
 
 - Create Note
 - Get All Notes
@@ -74,7 +74,7 @@ NotesApp/
 - Soft Delete Note
 - User-specific Notes
 
-### Tags
+### 🏷 Tags
 
 - Create Tag
 - Get All Tags
@@ -83,13 +83,24 @@ NotesApp/
 - Soft Delete Tag
 - User-specific Tags
 
-### Architecture
+### 🔗 Notes & Tags Integration
+
+- Assign Tag to Note
+- Remove Tag from Note
+- Retrieve Tag Name with Notes
+- Validate Tag Ownership
+- Nullable Tag Support
+- SQL LEFT JOIN Integration
+
+### 🏗 Architecture
 
 - Repository Pattern
 - Service Layer
 - Dependency Injection
 - SQL Server + Dapper
 - RESTful API Design
+- JWT Authorization
+- Soft Delete Strategy
 
 ---
 
@@ -114,6 +125,8 @@ NotesApp/
 - View Note Details
 - Update Notes
 - Soft Delete Notes
+- Assign Tags
+- Remove Tags
 - JWT Protected
 - User-specific Data
 
@@ -128,6 +141,16 @@ NotesApp/
 - Soft Delete Tags
 - JWT Protected
 - User-specific Data
+
+---
+
+## 🔗 Notes ↔ Tags
+
+- One Tag can be assigned to many Notes
+- Notes may have no Tag
+- Tag Name returned with every Note
+- Tag ownership validation
+- SQL LEFT JOIN for efficient retrieval
 
 ---
 
@@ -169,6 +192,7 @@ Project documentation is available inside the **docs/** directory.
 - authentication.md
 - notes.md
 - tags.md
+- note-tag.md
 - setup.md
 - tree.md
 
@@ -183,23 +207,27 @@ Project documentation is available inside the **docs/** directory.
 - Swagger Authorization
 - Notes CRUD
 - Tags CRUD
-- Soft Delete
+- Notes ↔ Tags Integration
 - Repository-Service Pattern
+- Soft Delete
 
 ## 🚧 Next
 
-- Notes ↔ Tags Integration
 - Search Notes
 - Pagination
 - Sorting
-- Validation
+- Filter by Tag
+- Filter by Date
 - Global Exception Middleware
+- FluentValidation
+- Logging
 
 ## 📌 Planned
 
 - Vue 3 Frontend
 - Dashboard
-- Profile Management
+- User Profile
+- File Uploads
 - Docker Support
 - Unit Testing
 - CI/CD Pipeline
@@ -218,7 +246,7 @@ dotnet build
 dotnet run
 ```
 
-API Documentation:
+Swagger UI:
 
 ```
 https://localhost:xxxx/swagger
@@ -255,8 +283,8 @@ Full Stack Developer Student
 
 ---
 
-## ⭐ Project Goal
+# 🎯 Project Goal
 
-This project is being developed step by step to demonstrate professional backend and frontend development practices, including authentication, REST APIs, clean architecture, database design, and modern web technologies.
+This project is being developed phase by phase to demonstrate professional backend and frontend development practices, including authentication, REST APIs, clean architecture, relational database design, and modern web technologies.
 
-Each completed phase is documented in the `docs/` folder before moving on to the next milestone.
+Each completed phase is documented in the **docs/** directory before moving to the next milestone.
