@@ -9,10 +9,14 @@ namespace NotesApp.Api.Services.Implementations;
 public class NoteService : INoteService
 {
     private readonly INoteRepository _noteRepository;
+    private readonly ITagRepository _tagRepository;
 
-    public NoteService(INoteRepository noteRepository)
+    public NoteService(
+        INoteRepository noteRepository,
+        ITagRepository tagRepository)
     {
         _noteRepository = noteRepository;
+        _tagRepository = tagRepository;
     }
 
     public async Task<IEnumerable<NoteResponse>> GetAllAsync(Guid userId)
@@ -20,13 +24,15 @@ public class NoteService : INoteService
         var notes = await _noteRepository.GetAllByUserIdAsync(userId);
 
         return notes.Select(n => new NoteResponse
-{
-    Id = n.Id,
-    Title = n.Title,
-    Content = n.Content,
-    CreatedAt = n.CreatedAt,
-    UpdatedAt = n.UpdatedAt
-});
+        {
+            Id = n.Id,
+            Title = n.Title,
+            Content = n.Content,
+            TagId = n.TagId,
+            TagName = n.TagName,
+            CreatedAt = n.CreatedAt,
+            UpdatedAt = n.UpdatedAt
+        });
     }
 
     public async Task<NoteResponse?> GetByIdAsync(Guid noteId, Guid userId)
@@ -41,6 +47,8 @@ public class NoteService : INoteService
             Id = note.Id,
             Title = note.Title,
             Content = note.Content,
+            TagId = note.TagId,
+            TagName = note.TagName,
             CreatedAt = note.CreatedAt,
             UpdatedAt = note.UpdatedAt
         };
@@ -48,16 +56,25 @@ public class NoteService : INoteService
 
     public async Task CreateAsync(Guid userId, CreateNoteRequest request)
     {
+        if (request.TagId.HasValue)
+        {
+            var tag = await _tagRepository.GetByIdAsync(request.TagId.Value);
+
+            if (tag == null || tag.UserId != userId)
+                throw new Exception("Invalid tag.");
+        }
+
         var note = new Note
-{
-    Id = Guid.NewGuid(),
-    UserId = userId,
-    Title = request.Title,
-    Content = request.Content,
-    CreatedAt = DateTime.UtcNow,
-    UpdatedAt = null,
-    IsDeleted = false
-};
+        {
+            Id = Guid.NewGuid(),
+            UserId = userId,
+            TagId = request.TagId,
+            Title = request.Title,
+            Content = request.Content,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = null,
+            IsDeleted = false
+        };
 
         await _noteRepository.CreateAsync(note);
     }
@@ -69,8 +86,17 @@ public class NoteService : INoteService
         if (note == null || note.UserId != userId)
             return false;
 
+        if (request.TagId.HasValue)
+        {
+            var tag = await _tagRepository.GetByIdAsync(request.TagId.Value);
+
+            if (tag == null || tag.UserId != userId)
+                throw new Exception("Invalid tag.");
+        }
+
         note.Title = request.Title;
         note.Content = request.Content;
+        note.TagId = request.TagId;
         note.UpdatedAt = DateTime.UtcNow;
 
         await _noteRepository.UpdateAsync(note);

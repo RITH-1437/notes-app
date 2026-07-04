@@ -17,11 +17,23 @@ public class NoteRepository : INoteRepository
     public async Task<IEnumerable<Note>> GetAllByUserIdAsync(Guid userId)
     {
         const string sql = @"
-            SELECT *
-            FROM Notes
-            WHERE UserId = @UserId
-              AND IsDeleted = 0
-            ORDER BY CreatedAt DESC;";
+            SELECT
+    n.Id,
+    n.UserId,
+    n.TagId,
+    t.Name AS TagName,
+    n.Title,
+    n.Content,
+    n.CreatedAt,
+    n.UpdatedAt,
+    n.IsDeleted
+FROM Notes n
+LEFT JOIN Tags t
+    ON n.TagId = t.Id
+WHERE
+    n.UserId = @UserId
+    AND n.IsDeleted = 0
+ORDER BY n.CreatedAt DESC;";
 
         using var connection = _connectionFactory.CreateConnection();
 
@@ -34,10 +46,22 @@ public class NoteRepository : INoteRepository
     public async Task<Note?> GetByIdAsync(Guid id)
     {
         const string sql = @"
-            SELECT *
-            FROM Notes
-            WHERE Id = @Id
-              AND IsDeleted = 0;";
+            SELECT
+    n.Id,
+    n.UserId,
+    n.TagId,
+    t.Name AS TagName,
+    n.Title,
+    n.Content,
+    n.CreatedAt,
+    n.UpdatedAt,
+    n.IsDeleted
+FROM Notes n
+LEFT JOIN Tags t
+    ON n.TagId = t.Id
+WHERE
+    n.Id = @Id
+    AND n.IsDeleted = 0;";
 
         using var connection = _connectionFactory.CreateConnection();
 
@@ -53,6 +77,7 @@ public class NoteRepository : INoteRepository
 (
     Id,
     UserId,
+    TagId,
     Title,
     Content,
     CreatedAt,
@@ -63,6 +88,7 @@ VALUES
 (
     @Id,
     @UserId,
+    @TagId,
     @Title,
     @Content,
     @CreatedAt,
@@ -79,12 +105,14 @@ VALUES
 {
     const string sql = @"
         UPDATE Notes
-        SET
-            Title = @Title,
-            Content = @Content,
-            UpdatedAt = @UpdatedAt
-        WHERE Id = @Id
-          AND IsDeleted = 0;";
+SET
+    TagId = @TagId,
+    Title = @Title,
+    Content = @Content,
+    UpdatedAt = @UpdatedAt
+WHERE
+    Id = @Id
+    AND IsDeleted = 0;";
 
     using var connection = _connectionFactory.CreateConnection();
 
