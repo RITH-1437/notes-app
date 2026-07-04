@@ -73,8 +73,6 @@ public class AuthService : IAuthService
 
         return new AuthResponse
         {
-            Success = true,
-            Message = "Registration successful.",
             AccessToken = accessToken,
             RefreshToken = refreshToken,
             ExpiresAt = refreshTokenEntity.ExpiresAt
@@ -116,8 +114,6 @@ public class AuthService : IAuthService
 
         return new AuthResponse
         {
-            Success = true,
-            Message = "Login successful.",
             AccessToken = accessToken,
             RefreshToken = refreshToken,
             ExpiresAt = refreshTokenEntity.ExpiresAt
@@ -169,8 +165,6 @@ public class AuthService : IAuthService
 
         return new AuthResponse
         {
-            Success = true,
-            Message = "Token refreshed successfully.",
             AccessToken = newAccessToken,
             RefreshToken = newRefreshToken,
             ExpiresAt = refreshTokenEntity.ExpiresAt

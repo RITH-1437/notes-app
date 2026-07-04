@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NotesApp.Api.Extensions;
+using NotesApp.Api.Models.Entities;
 using NotesApp.Api.Models.Requests;
+using NotesApp.Api.Models.Responses;
 using NotesApp.Api.Services.Interfaces;
 
 namespace NotesApp.Api.Controllers;
@@ -25,7 +27,9 @@ public class TagsController : ControllerBase
 
         var tags = await _tagService.GetAllAsync(userId);
 
-        return Ok(tags);
+        return Ok(ApiResponse<IEnumerable<Tag>>.Ok(
+            tags,
+            "Tags retrieved successfully."));
     }
 
     [HttpGet("{id:guid}")]
@@ -35,7 +39,9 @@ public class TagsController : ControllerBase
 
         var tag = await _tagService.GetByIdAsync(id, userId);
 
-        return Ok(tag);
+        return Ok(ApiResponse<Tag>.Ok(
+            tag,
+            "Tag retrieved successfully."));
     }
 
     [HttpPost]
@@ -48,7 +54,7 @@ public class TagsController : ControllerBase
         return CreatedAtAction(
             nameof(GetById),
             new { id = tag.Id },
-            tag);
+            ApiResponse<Tag>.Ok(tag, "Tag created successfully."));
     }
 
     [HttpPut("{id:guid}")]
@@ -60,11 +66,9 @@ public class TagsController : ControllerBase
 
         var tag = await _tagService.UpdateAsync(id, userId, request);
 
-        return Ok(new
-        {
-            Message = "Tag updated successfully.",
-            Tag = tag
-        });
+        return Ok(ApiResponse<Tag>.Ok(
+            tag,
+            "Tag updated successfully."));
     }
 
     [HttpDelete("{id:guid}")]
@@ -74,9 +78,8 @@ public class TagsController : ControllerBase
 
         await _tagService.DeleteAsync(id, userId);
 
-        return Ok(new
-        {
-            Message = "Tag deleted successfully."
-        });
+        return Ok(ApiResponse<object>.Ok(
+            null,
+            "Tag deleted successfully."));
     }
 }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using NotesApp.Api.Models.Requests;
+using NotesApp.Api.Models.Responses;
 using NotesApp.Api.Services.Interfaces;
 
 namespace NotesApp.Api.Controllers;
@@ -20,7 +21,9 @@ public class AuthController : ControllerBase
     {
         var result = await _authService.RegisterAsync(request);
 
-        return Ok(result);
+        return Ok(ApiResponse<AuthResponse>.Ok(
+            result,
+            "Registration successful."));
     }
 
     [HttpPost("login")]
@@ -28,7 +31,9 @@ public class AuthController : ControllerBase
     {
         var result = await _authService.LoginAsync(request);
 
-        return Ok(result);
+        return Ok(ApiResponse<AuthResponse>.Ok(
+            result,
+            "Login successful."));
     }
 
     [HttpPost("refresh")]
@@ -36,7 +41,9 @@ public class AuthController : ControllerBase
     {
         var result = await _authService.RefreshTokenAsync(request);
 
-        return Ok(result);
+        return Ok(ApiResponse<AuthResponse>.Ok(
+            result,
+            "Token refreshed successfully."));
     }
 
     [HttpPost("logout")]
@@ -44,10 +51,8 @@ public class AuthController : ControllerBase
     {
         await _authService.LogoutAsync(request.RefreshToken);
 
-        return Ok(new
-        {
-            Success = true,
-            Message = "Logged out successfully."
-        });
+        return Ok(ApiResponse<object>.Ok(
+            null,
+            "Logged out successfully."));
     }
 }

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NotesApp.Api.Extensions;
 using NotesApp.Api.Models.Requests;
+using NotesApp.Api.Models.Responses;
 using NotesApp.Api.Services.Interfaces;
 
 namespace NotesApp.Api.Controllers;
@@ -25,7 +26,9 @@ public class NotesController : ControllerBase
 
         var notes = await _noteService.GetAllAsync(userId);
 
-        return Ok(notes);
+        return Ok(ApiResponse<IEnumerable<NoteResponse>>.Ok(
+            notes,
+            "Notes retrieved successfully."));
     }
 
     [HttpGet("{id:guid}")]
@@ -35,7 +38,9 @@ public class NotesController : ControllerBase
 
         var note = await _noteService.GetByIdAsync(id, userId);
 
-        return Ok(note);
+        return Ok(ApiResponse<NoteResponse>.Ok(
+            note,
+            "Note retrieved successfully."));
     }
 
     [HttpPost]
@@ -45,12 +50,13 @@ public class NotesController : ControllerBase
 
         await _noteService.CreateAsync(userId, request);
 
-        return Created(string.Empty, new
-        {
-            Message = "Note created successfully.",
-            Title = request.Title,
-            Content = request.Content
-        });
+        return Created(string.Empty, ApiResponse<object>.Ok(
+            new
+            {
+                Title = request.Title,
+                Content = request.Content
+            },
+            "Note created successfully."));
     }
 
     [HttpPut("{id:guid}")]
@@ -60,12 +66,13 @@ public class NotesController : ControllerBase
 
         await _noteService.UpdateAsync(id, userId, request);
 
-        return Ok(new
-        {
-            Message = "Note updated successfully.",
-            Title = request.Title,
-            Content = request.Content
-        });
+        return Ok(ApiResponse<object>.Ok(
+            new
+            {
+                Title = request.Title,
+                Content = request.Content
+            },
+            "Note updated successfully."));
     }
 
     [HttpDelete("{id:guid}")]
@@ -75,10 +82,9 @@ public class NotesController : ControllerBase
 
         await _noteService.DeleteAsync(id, userId);
 
-        return Ok(new
-        {
-            Message = "Note deleted successfully."
-        });
+        return Ok(ApiResponse<object>.Ok(
+            null,
+            "Note deleted successfully."));
     }
 
     [HttpGet("search")]
@@ -88,6 +94,8 @@ public class NotesController : ControllerBase
 
         var notes = await _noteService.SearchAsync(userId, request);
 
-        return Ok(notes);
+        return Ok(ApiResponse<IEnumerable<NoteResponse>>.Ok(
+            notes,
+            "Notes retrieved successfully."));
     }
 }
