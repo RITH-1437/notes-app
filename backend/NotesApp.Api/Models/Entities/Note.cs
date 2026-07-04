@@ -8,6 +8,7 @@ public class Note
 
     public string Title { get; set; } = string.Empty;
 
+    public Guid? TagId { get; set; }
     public string? Content { get; set; }
     public DateTime CreatedAt { get; set; }
 
