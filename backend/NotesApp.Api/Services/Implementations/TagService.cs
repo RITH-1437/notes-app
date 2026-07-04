@@ -1,3 +1,4 @@
+using NotesApp.Api.Exceptions;
 using NotesApp.Api.Models.Entities;
 using NotesApp.Api.Models.Requests;
 using NotesApp.Api.Repositories.Interfaces;
@@ -19,12 +20,15 @@ public class TagService : ITagService
         return await _tagRepository.GetAllByUserIdAsync(userId);
     }
 
-    public async Task<Tag?> GetByIdAsync(Guid id, Guid userId)
+    public async Task<Tag> GetByIdAsync(Guid id, Guid userId)
     {
         var tag = await _tagRepository.GetByIdAsync(id);
 
-        if (tag == null || tag.UserId != userId)
-            return null;
+        if (tag == null)
+            throw new NotFoundException("Tag not found.");
+
+        if (tag.UserId != userId)
+            throw new ForbiddenException("You are not allowed to access this tag.");
 
         return tag;
     }
@@ -34,7 +38,7 @@ public class TagService : ITagService
         var existing = await _tagRepository.GetByNameAsync(userId, request.Name);
 
         if (existing != null)
-            throw new Exception("Tag already exists.");
+            throw new BadRequestException("Tag already exists.");
 
         var tag = new Tag
         {
@@ -51,17 +55,20 @@ public class TagService : ITagService
         return tag;
     }
 
-    public async Task<Tag?> UpdateAsync(Guid id, Guid userId, UpdateTagRequest request)
+    public async Task<Tag> UpdateAsync(Guid id, Guid userId, UpdateTagRequest request)
     {
         var tag = await _tagRepository.GetByIdAsync(id);
 
-        if (tag == null || tag.UserId != userId)
-            return null;
+        if (tag == null)
+            throw new NotFoundException("Tag not found.");
+
+        if (tag.UserId != userId)
+            throw new ForbiddenException("You are not allowed to update this tag.");
 
         var duplicate = await _tagRepository.GetByNameAsync(userId, request.Name);
 
         if (duplicate != null && duplicate.Id != id)
-            throw new Exception("Tag name already exists.");
+            throw new BadRequestException("Tag name already exists.");
 
         tag.Name = request.Name;
         tag.UpdatedAt = DateTime.UtcNow;
@@ -71,15 +78,16 @@ public class TagService : ITagService
         return tag;
     }
 
-    public async Task<bool> DeleteAsync(Guid id, Guid userId)
+    public async Task DeleteAsync(Guid id, Guid userId)
     {
         var tag = await _tagRepository.GetByIdAsync(id);
 
-        if (tag == null || tag.UserId != userId)
-            return false;
+        if (tag == null)
+            throw new NotFoundException("Tag not found.");
+
+        if (tag.UserId != userId)
+            throw new ForbiddenException("You are not allowed to delete this tag.");
 
         await _tagRepository.DeleteAsync(id);
-
-        return true;
     }
 }

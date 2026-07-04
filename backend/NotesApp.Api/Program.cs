@@ -8,6 +8,9 @@ using NotesApp.Api.Services.Interfaces;
 using NotesApp.Api.Repositories.Interfaces;
 using NotesApp.Api.Repositories.Implementations;
 using Microsoft.OpenApi.Models;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using NotesApp.Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +34,9 @@ var jwtSettings = builder.Configuration
 // ==============================
 
 builder.Services.AddControllers();
+builder.Services.AddFluentValidationAutoValidation();
+
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 builder.Services.AddSingleton<SqlConnectionFactory>();
 builder.Services.AddScoped<IPasswordService, PasswordService>();
@@ -120,7 +126,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();

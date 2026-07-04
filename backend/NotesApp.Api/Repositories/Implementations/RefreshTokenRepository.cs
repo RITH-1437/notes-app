@@ -46,9 +46,9 @@ VALUES
         using var connection = _connectionFactory.CreateConnection();
 
         const string sql = @"
-SELECT *
-FROM RefreshTokens
-WHERE Token = @Token;";
+    SELECT *
+    FROM RefreshTokens
+    WHERE Token = @Token;";
 
         return await connection.QueryFirstOrDefaultAsync<RefreshToken>(
             sql,
@@ -60,9 +60,9 @@ WHERE Token = @Token;";
         using var connection = _connectionFactory.CreateConnection();
 
         const string sql = @"
-UPDATE RefreshTokens
-SET RevokedAt = GETUTCDATE()
-WHERE Id = @Id;";
+            UPDATE RefreshTokens
+            SET RevokedAt = GETUTCDATE()
+            WHERE Id = @Id;";
 
         await connection.ExecuteAsync(sql, new { Id = id });
     }

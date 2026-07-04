@@ -121,8 +121,13 @@ NotesApp/
 - Search & Filtering
 - Dynamic Sorting
 - User Data Isolation
+- FluentValidation
+- Global Exception Middleware
+- Custom Exceptions
+- Consistent Error Responses
 
 ---
+
 
 # 🔒 Security
 
@@ -131,6 +136,8 @@ NotesApp/
 - BCrypt Password Hashing
 - Authorization Middleware
 - User Ownership Validation
+- FluentValidation
+- Global Exception Middleware
 - Protected API Endpoints
 
 ---
@@ -188,13 +195,14 @@ Project documentation is available inside the **docs/** directory.
 - Dynamic Sorting
 - Repository-Service Pattern
 - Soft Delete Strategy
+- FluentValidation
+- Custom Exceptions
+- Global Exception Middleware
 
 ---
 
 ## 🚧 In Progress
 
-- FluentValidation
-- Global Exception Handling
 - Standard API Response
 - Logging
 

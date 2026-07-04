@@ -35,14 +35,11 @@ public class NotesController : ControllerBase
 
         var note = await _noteService.GetByIdAsync(id, userId);
 
-        if (note is null)
-            return NotFound();
-
         return Ok(note);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateNoteRequest request)
+    public async Task<IActionResult> Create([FromBody] CreateNoteRequest request)
     {
         var userId = User.GetUserId();
 
@@ -53,19 +50,15 @@ public class NotesController : ControllerBase
             Message = "Note created successfully.",
             Title = request.Title,
             Content = request.Content
-
         });
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> Update(Guid id, UpdateNoteRequest request)
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateNoteRequest request)
     {
         var userId = User.GetUserId();
 
-        var updated = await _noteService.UpdateAsync(id, userId, request);
-
-        if (!updated)
-            return NotFound();
+        await _noteService.UpdateAsync(id, userId, request);
 
         return Ok(new
         {
@@ -80,10 +73,7 @@ public class NotesController : ControllerBase
     {
         var userId = User.GetUserId();
 
-        var deleted = await _noteService.DeleteAsync(id, userId);
-
-        if (!deleted)
-            return NotFound();
+        await _noteService.DeleteAsync(id, userId);
 
         return Ok(new
         {
@@ -92,13 +82,12 @@ public class NotesController : ControllerBase
     }
 
     [HttpGet("search")]
-public async Task<IActionResult> Search(
-    [FromQuery] NoteQueryRequest request)
-{
-    var userId = User.GetUserId();
+    public async Task<IActionResult> Search([FromQuery] NoteQueryRequest request)
+    {
+        var userId = User.GetUserId();
 
-    var notes = await _noteService.SearchAsync(userId, request);
+        var notes = await _noteService.SearchAsync(userId, request);
 
-    return Ok(notes);
-}
+        return Ok(notes);
+    }
 }

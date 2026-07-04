@@ -7,11 +7,11 @@ public interface ITagService
 {
     Task<IEnumerable<Tag>> GetAllAsync(Guid userId);
 
-    Task<Tag?> GetByIdAsync(Guid id, Guid userId);
+    Task<Tag> GetByIdAsync(Guid id, Guid userId);
 
     Task<Tag> CreateAsync(Guid userId, CreateTagRequest request);
 
-    Task<Tag?> UpdateAsync(Guid id, Guid userId, UpdateTagRequest request);
+    Task<Tag> UpdateAsync(Guid id, Guid userId, UpdateTagRequest request);
 
-    Task<bool> DeleteAsync(Guid id, Guid userId);
+    Task DeleteAsync(Guid id, Guid userId);
 }

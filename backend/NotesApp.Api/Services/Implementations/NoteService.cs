@@ -3,7 +3,7 @@ using NotesApp.Api.Models.Requests;
 using NotesApp.Api.Models.Responses;
 using NotesApp.Api.Repositories.Interfaces;
 using NotesApp.Api.Services.Interfaces;
-
+using NotesApp.Api.Exceptions;
 namespace NotesApp.Api.Services.Implementations;
 
 public class NoteService : INoteService
@@ -35,24 +35,27 @@ public class NoteService : INoteService
         });
     }
 
-    public async Task<NoteResponse?> GetByIdAsync(Guid noteId, Guid userId)
+    public async Task<NoteResponse> GetByIdAsync(Guid noteId, Guid userId)
+{
+    var note = await _noteRepository.GetByIdAsync(noteId);
+
+    if (note == null)
+        throw new NotFoundException("Note not found.");
+
+    if (note.UserId != userId)
+        throw new ForbiddenException("You are not allowed to access this note.");
+
+    return new NoteResponse
     {
-        var note = await _noteRepository.GetByIdAsync(noteId);
-
-        if (note == null || note.UserId != userId)
-            return null;
-
-        return new NoteResponse
-        {
-            Id = note.Id,
-            Title = note.Title,
-            Content = note.Content,
-            TagId = note.TagId,
-            TagName = note.TagName,
-            CreatedAt = note.CreatedAt,
-            UpdatedAt = note.UpdatedAt
-        };
-    }
+        Id = note.Id,
+        Title = note.Title,
+        Content = note.Content,
+        TagId = note.TagId,
+        TagName = note.TagName,
+        CreatedAt = note.CreatedAt,
+        UpdatedAt = note.UpdatedAt
+    };
+}
 
     public async Task CreateAsync(Guid userId, CreateNoteRequest request)
     {
@@ -61,7 +64,7 @@ public class NoteService : INoteService
             var tag = await _tagRepository.GetByIdAsync(request.TagId.Value);
 
             if (tag == null || tag.UserId != userId)
-                throw new Exception("Invalid tag.");
+                throw new BadRequestException("Invalid tag.");
         }
 
         var note = new Note
@@ -79,41 +82,42 @@ public class NoteService : INoteService
         await _noteRepository.CreateAsync(note);
     }
 
-    public async Task<bool> UpdateAsync(Guid noteId, Guid userId, UpdateNoteRequest request)
+    public async Task UpdateAsync(Guid noteId, Guid userId, UpdateNoteRequest request)
     {
         var note = await _noteRepository.GetByIdAsync(noteId);
 
-        if (note == null || note.UserId != userId)
-            return false;
+if (note == null)
+    throw new NotFoundException("Note not found.");
 
-        if (request.TagId.HasValue)
-        {
-            var tag = await _tagRepository.GetByIdAsync(request.TagId.Value);
+if (note.UserId != userId)
+    throw new ForbiddenException("You are not allowed to access this note.");
 
-            if (tag == null || tag.UserId != userId)
-                throw new Exception("Invalid tag.");
-        }
+if (request.TagId.HasValue)
+{
+    var tag = await _tagRepository.GetByIdAsync(request.TagId.Value);
 
-        note.Title = request.Title;
-        note.Content = request.Content;
-        note.TagId = request.TagId;
-        note.UpdatedAt = DateTime.UtcNow;
+    if (tag == null || tag.UserId != userId)
+        throw new BadRequestException("Invalid tag.");
+}
 
-        await _noteRepository.UpdateAsync(note);
+note.Title = request.Title;
+note.Content = request.Content;
+note.TagId = request.TagId;
+note.UpdatedAt = DateTime.UtcNow;
 
-        return true;
+await _noteRepository.UpdateAsync(note);
     }
 
-    public async Task<bool> DeleteAsync(Guid noteId, Guid userId)
-    {
-        var note = await _noteRepository.GetByIdAsync(noteId);
+    public async Task DeleteAsync(Guid noteId, Guid userId)
+    {var note = await _noteRepository.GetByIdAsync(noteId);
 
-        if (note == null || note.UserId != userId)
-            return false;
+if (note == null)
+    throw new NotFoundException("Note not found.");
 
-        await _noteRepository.DeleteAsync(noteId);
+if (note.UserId != userId)
+    throw new ForbiddenException("You are not allowed to access this note.");
 
-        return true;
+await _noteRepository.DeleteAsync(noteId);
     }
 
     public async Task<IEnumerable<NoteResponse>> SearchAsync(
@@ -126,7 +130,7 @@ public class NoteService : INoteService
             var tag = await _tagRepository.GetByIdAsync(request.TagId.Value);
 
             if (tag == null || tag.UserId != userId)
-                throw new Exception("Invalid tag.");
+                throw new BadRequestException("Invalid tag.");
         }
 
         var notes = await _noteRepository.SearchAsync(userId, request);

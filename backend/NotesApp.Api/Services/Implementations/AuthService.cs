@@ -3,6 +3,7 @@ using NotesApp.Api.Models.Requests;
 using NotesApp.Api.Models.Responses;
 using NotesApp.Api.Repositories.Interfaces;
 using NotesApp.Api.Services.Interfaces;
+using NotesApp.Api.Exceptions;
 
 namespace NotesApp.Api.Services.Implementations;
 
@@ -30,24 +31,16 @@ public class AuthService : IAuthService
         var existingEmail = await _userRepository.GetByEmailAsync(request.Email);
 
         if (existingEmail != null)
-        {
-            return new AuthResponse
-            {
-                Success = false,
-                Message = "Email already exists."
-            };
-        }
+{
+    throw new BadRequestException("Email already exists.");
+}
 
         var existingUsername = await _userRepository.GetByUsernameAsync(request.Username);
 
         if (existingUsername != null)
-        {
-            return new AuthResponse
-            {
-                Success = false,
-                Message = "Username already exists."
-            };
-        }
+{
+    throw new BadRequestException("Username already exists.");
+}
 
         var user = new User
         {
@@ -93,26 +86,18 @@ public class AuthService : IAuthService
         var user = await _userRepository.GetByEmailAsync(request.Email);
 
         if (user == null)
-        {
-            return new AuthResponse
-            {
-                Success = false,
-                Message = "Invalid email or password."
-            };
-        }
+{
+    throw new UnauthorizedException("Invalid email or password.");
+}
 
         var isPasswordValid = _passwordService.VerifyPassword(
             request.Password,
             user.PasswordHash);
 
         if (!isPasswordValid)
-        {
-            return new AuthResponse
-            {
-                Success = false,
-                Message = "Invalid email or password."
-            };
-        }
+{
+    throw new UnauthorizedException("Invalid password.");
+}
 
         var accessToken = _jwtService.GenerateAccessToken(user);
         var refreshToken = _jwtService.GenerateRefreshToken();
@@ -144,42 +129,26 @@ public class AuthService : IAuthService
         var storedToken = await _refreshTokenRepository.GetByTokenAsync(request.RefreshToken);
 
         if (storedToken == null)
-        {
-            return new AuthResponse
-            {
-                Success = false,
-                Message = "Invalid refresh token."
-            };
-        }
+{
+    throw new UnauthorizedException("Invalid refresh token.");
+}
 
         if (storedToken.RevokedAt != null)
-        {
-            return new AuthResponse
-            {
-                Success = false,
-                Message = "Refresh token has been revoked."
-            };
-        }
+{
+    throw new UnauthorizedException("Refresh token has been revoked.");
+}
 
         if (storedToken.ExpiresAt <= DateTime.UtcNow)
-        {
-            return new AuthResponse
-            {
-                Success = false,
-                Message = "Refresh token has expired."
-            };
-        }
+{
+    throw new UnauthorizedException("Refresh token has expired.");
+}
 
         var user = await _userRepository.GetByIdAsync(storedToken.UserId);
 
         if (user == null)
-        {
-            return new AuthResponse
-            {
-                Success = false,
-                Message = "User not found."
-            };
-        }
+{
+    throw new NotFoundException("User not found.");
+}
 
         await _refreshTokenRepository.RevokeAsync(storedToken.Id);
 
@@ -213,9 +182,9 @@ public class AuthService : IAuthService
         var storedToken = await _refreshTokenRepository.GetByTokenAsync(refreshToken);
 
         if (storedToken == null)
-        {
-            return;
-        }
+{
+    throw new UnauthorizedException("Invalid refresh token.");
+}
 
         await _refreshTokenRepository.RevokeAsync(storedToken.Id);
     }

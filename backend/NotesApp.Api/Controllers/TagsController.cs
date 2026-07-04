@@ -35,12 +35,6 @@ public class TagsController : ControllerBase
 
         var tag = await _tagService.GetByIdAsync(id, userId);
 
-        if (tag == null)
-            return NotFound(new
-            {
-                Message = "Tag not found."
-            });
-
         return Ok(tag);
     }
 
@@ -66,12 +60,6 @@ public class TagsController : ControllerBase
 
         var tag = await _tagService.UpdateAsync(id, userId, request);
 
-        if (tag == null)
-            return NotFound(new
-            {
-                Message = "Tag not found."
-            });
-
         return Ok(new
         {
             Message = "Tag updated successfully.",
@@ -84,13 +72,7 @@ public class TagsController : ControllerBase
     {
         var userId = User.GetUserId();
 
-        var deleted = await _tagService.DeleteAsync(id, userId);
-
-        if (!deleted)
-            return NotFound(new
-            {
-                Message = "Tag not found."
-            });
+        await _tagService.DeleteAsync(id, userId);
 
         return Ok(new
         {

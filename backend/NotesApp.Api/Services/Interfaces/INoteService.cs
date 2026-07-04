@@ -8,14 +8,14 @@ public interface INoteService
     Task<IEnumerable<NoteResponse>> GetAllAsync(Guid userId);
 
     Task<IEnumerable<NoteResponse>> SearchAsync(
-    Guid userId,
-    NoteQueryRequest request);
+        Guid userId,
+        NoteQueryRequest request);
 
-    Task<NoteResponse?> GetByIdAsync(Guid noteId, Guid userId);
+    Task<NoteResponse> GetByIdAsync(Guid noteId, Guid userId);
 
     Task CreateAsync(Guid userId, CreateNoteRequest request);
 
-    Task<bool> UpdateAsync(Guid noteId, Guid userId, UpdateNoteRequest request);
+    Task UpdateAsync(Guid noteId, Guid userId, UpdateNoteRequest request);
 
-    Task<bool> DeleteAsync(Guid noteId, Guid userId);
+    Task DeleteAsync(Guid noteId, Guid userId);
 }
