@@ -7,6 +7,10 @@ public interface INoteService
 {
     Task<IEnumerable<NoteResponse>> GetAllAsync(Guid userId);
 
+    Task<IEnumerable<NoteResponse>> SearchAsync(
+    Guid userId,
+    NoteQueryRequest request);
+
     Task<NoteResponse?> GetByIdAsync(Guid noteId, Guid userId);
 
     Task CreateAsync(Guid userId, CreateNoteRequest request);

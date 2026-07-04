@@ -2,7 +2,7 @@
 
 A full-stack Notes application built as a technical assessment using **ASP.NET Core 8 Web API**, **Dapper**, **SQL Server**, and **Vue 3**.
 
-The project follows the **Repository-Service Pattern** and focuses on clean architecture, secure authentication, RESTful API design, and modern full-stack development practices.
+The project follows the **Repository-Service Pattern** and focuses on clean architecture, secure authentication, RESTful API development, and modern full-stack best practices.
 
 ---
 
@@ -14,6 +14,7 @@ The project follows the **Repository-Service Pattern** and focuses on clean arch
 - Dapper
 - SQL Server
 - JWT Authentication
+- Refresh Token
 - BCrypt Password Hashing
 - Swagger / OpenAPI
 
@@ -49,32 +50,44 @@ NotesApp/
 
 ---
 
-# ✅ Current Status
+# 📊 Current Status
 
-🚧 Backend API is under active development.
+🚧 Backend API is feature-complete for the core Notes module and continues to evolve with validation, middleware, frontend integration, and deployment.
 
-## Completed
+---
 
-### 🔐 Authentication
+# ✅ Completed Features
+
+## 🔐 Authentication
 
 - JWT Authentication
+- Refresh Token Authentication
 - BCrypt Password Hashing
 - User Registration
 - User Login
-- Refresh Token
-- Logout
+- User Logout
+- Protected Endpoints
 - Swagger JWT Authorization
 
-### 📝 Notes
+---
+
+## 📝 Notes
 
 - Create Note
 - Get All Notes
 - Get Note By Id
 - Update Note
 - Soft Delete Note
+- Search Notes
+- Search by Title
+- Search by Content
+- Filter Notes by Tag
+- Sort Notes
 - User-specific Notes
 
-### 🏷 Tags
+---
+
+## 🏷 Tags
 
 - Create Tag
 - Get All Tags
@@ -83,85 +96,42 @@ NotesApp/
 - Soft Delete Tag
 - User-specific Tags
 
-### 🔗 Notes & Tags Integration
+---
+
+## 🔗 Notes & Tags Integration
 
 - Assign Tag to Note
 - Remove Tag from Note
-- Retrieve Tag Name with Notes
-- Validate Tag Ownership
 - Nullable Tag Support
+- Retrieve Tag Name with Notes
 - SQL LEFT JOIN Integration
+- Tag Ownership Validation
 
-### 🏗 Architecture
+---
 
-- Repository Pattern
-- Service Layer
+## 🌐 API Features
+
+- RESTful API
+- JWT Authentication
+- Swagger Documentation
+- Repository-Service Pattern
 - Dependency Injection
-- SQL Server + Dapper
-- RESTful API Design
-- JWT Authorization
+- Dapper Data Access
 - Soft Delete Strategy
+- Search & Filtering
+- Dynamic Sorting
+- User Data Isolation
 
 ---
 
-# 📌 Features
-
-## 🔐 Authentication
-
-- User Registration
-- User Login
-- JWT Access Token
-- Refresh Token
-- Logout
-- BCrypt Password Hashing
-- Protected Endpoints
-
----
-
-## 📝 Notes Management
-
-- Create Notes
-- View All Notes
-- View Note Details
-- Update Notes
-- Soft Delete Notes
-- Assign Tags
-- Remove Tags
-- JWT Protected
-- User-specific Data
-
----
-
-## 🏷 Tags Management
-
-- Create Tags
-- View All Tags
-- View Tag Details
-- Update Tags
-- Soft Delete Tags
-- JWT Protected
-- User-specific Data
-
----
-
-## 🔗 Notes ↔ Tags
-
-- One Tag can be assigned to many Notes
-- Notes may have no Tag
-- Tag Name returned with every Note
-- Tag ownership validation
-- SQL LEFT JOIN for efficient retrieval
-
----
-
-# 🔒 API Security
+# 🔒 Security
 
 - JWT Bearer Authentication
-- BCrypt Password Hashing
 - Refresh Token Support
+- BCrypt Password Hashing
 - Authorization Middleware
 - User Ownership Validation
-- Soft Delete Strategy
+- Protected API Endpoints
 
 ---
 
@@ -180,7 +150,10 @@ Services
 Repositories
    │
    ▼
-SQL Server (Dapper)
+Dapper
+   │
+   ▼
+SQL Server
 ```
 
 ---
@@ -193,6 +166,7 @@ Project documentation is available inside the **docs/** directory.
 - notes.md
 - tags.md
 - note-tag.md
+- search.md
 - setup.md
 - tree.md
 
@@ -204,51 +178,73 @@ Project documentation is available inside the **docs/** directory.
 
 - JWT Authentication
 - Refresh Token
+- BCrypt Password Hashing
 - Swagger Authorization
 - Notes CRUD
 - Tags CRUD
 - Notes ↔ Tags Integration
-- Repository-Service Pattern
-- Soft Delete
-
-## 🚧 Next
-
 - Search Notes
-- Pagination
-- Sorting
 - Filter by Tag
-- Filter by Date
-- Global Exception Middleware
+- Dynamic Sorting
+- Repository-Service Pattern
+- Soft Delete Strategy
+
+---
+
+## 🚧 In Progress
+
 - FluentValidation
+- Global Exception Handling
+- Standard API Response
 - Logging
+
+---
 
 ## 📌 Planned
 
-- Vue 3 Frontend
-- Dashboard
-- User Profile
-- File Uploads
+### Backend
+
 - Docker Support
 - Unit Testing
+- Integration Testing
 - CI/CD Pipeline
 - Azure Deployment
+
+### Frontend
+
+- Vue 3 Authentication
+- Notes Dashboard
+- Tag Management
+- Responsive UI
 
 ---
 
 # 🛠 Getting Started
 
+## Clone Repository
+
+```bash
+git clone https://github.com/your-username/NotesApp.git
+cd NotesApp
+```
+
+---
+
 ## Backend
 
 ```bash
 cd backend/NotesApp.Api
+
 dotnet restore
+
 dotnet build
+
 dotnet run
 ```
 
-Swagger UI:
+Swagger
 
-```
+```text
 https://localhost:xxxx/swagger
 ```
 
@@ -258,9 +254,30 @@ https://localhost:xxxx/swagger
 
 ```bash
 cd frontend/NotesApp.Web
+
 npm install
+
 npm run dev
 ```
+
+---
+
+# 🎯 Project Goals
+
+This project is being developed phase by phase to demonstrate professional software engineering practices, including:
+
+- Clean Architecture
+- Repository-Service Pattern
+- RESTful API Development
+- JWT Authentication
+- SQL Server Database Design
+- Secure Backend Development
+- Modern Frontend Development
+- Documentation-Driven Development
+- Git Version Control
+- Production-ready Coding Standards
+
+Each completed phase is documented inside the **docs/** directory before moving to the next milestone.
 
 ---
 
@@ -283,8 +300,16 @@ Full Stack Developer Student
 
 ---
 
-# 🎯 Project Goal
+# ⭐ Future Vision
 
-This project is being developed phase by phase to demonstrate professional backend and frontend development practices, including authentication, REST APIs, clean architecture, relational database design, and modern web technologies.
+The long-term goal is to transform **NotesApp** into a production-ready full-stack application featuring:
 
-Each completed phase is documented in the **docs/** directory before moving to the next milestone.
+- Authentication & Authorization
+- Rich Note Management
+- Smart Search
+- Responsive Vue Frontend
+- Docker Deployment
+- Cloud Hosting
+- CI/CD Automation
+- Comprehensive Testing
+- Clean, Maintainable Architecture

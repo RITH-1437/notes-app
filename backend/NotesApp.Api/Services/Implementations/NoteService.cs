@@ -115,4 +115,31 @@ public class NoteService : INoteService
 
         return true;
     }
+
+    public async Task<IEnumerable<NoteResponse>> SearchAsync(
+        Guid userId,
+        NoteQueryRequest request)
+    {
+        // Validate tag ownership
+        if (request.TagId.HasValue)
+        {
+            var tag = await _tagRepository.GetByIdAsync(request.TagId.Value);
+
+            if (tag == null || tag.UserId != userId)
+                throw new Exception("Invalid tag.");
+        }
+
+        var notes = await _noteRepository.SearchAsync(userId, request);
+
+        return notes.Select(n => new NoteResponse
+        {
+            Id = n.Id,
+            Title = n.Title,
+            Content = n.Content,
+            TagId = n.TagId,
+            TagName = n.TagName,
+            CreatedAt = n.CreatedAt,
+            UpdatedAt = n.UpdatedAt
+        });
+    }
 }

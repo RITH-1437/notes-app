@@ -90,4 +90,15 @@ public class NotesController : ControllerBase
             Message = "Note deleted successfully."
         });
     }
+
+    [HttpGet("search")]
+public async Task<IActionResult> Search(
+    [FromQuery] NoteQueryRequest request)
+{
+    var userId = User.GetUserId();
+
+    var notes = await _noteService.SearchAsync(userId, request);
+
+    return Ok(notes);
+}
 }
