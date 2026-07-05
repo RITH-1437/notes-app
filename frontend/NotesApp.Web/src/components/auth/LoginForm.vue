@@ -75,11 +75,12 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { AxiosError } from 'axios'
+import { toast } from 'vue-sonner'
 
 import { useAuthStore } from '@/stores/auth'
+import { getApiErrorMessage } from '@/utils/api-error'
 
 const router = useRouter()
 const auth = useAuthStore()
@@ -92,21 +93,24 @@ const form = reactive({
   password: ''
 })
 
+onMounted(() => {
+  const notification = sessionStorage.getItem('authNotification')
+
+  if (notification) {
+    sessionStorage.removeItem('authNotification')
+    toast.warning(notification)
+  }
+})
+
 async function handleLogin() {
   error.value = ''
 
   try {
     await auth.login(form)
 
-    router.push('/')
+    await router.push('/')
   } catch (err) {
-    if (err instanceof AxiosError) {
-      error.value =
-        err.response?.data?.message ??
-        'Invalid email or password.'
-    } else {
-      error.value = 'Something went wrong.'
-    }
+    error.value = getApiErrorMessage(err, 'Unable to sign in. Please try again.')
   }
 }
 </script>

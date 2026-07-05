@@ -1,5 +1,8 @@
 import { defineStore } from 'pinia'
+import { toast } from 'vue-sonner'
+
 import authService from '@/services/auth.service'
+import { getApiErrorMessage } from '@/utils/api-error'
 
 import type {
   LoginRequest,
@@ -14,7 +17,23 @@ export const useAuthStore = defineStore('auth', {
   }),
 
   getters: {
-    isAuthenticated: (state) => !!state.accessToken
+    isAuthenticated: (state) => !!state.accessToken,
+
+    username: (state): string => {
+      if (!state.accessToken) return ''
+      try {
+        const payload = JSON.parse(atob(state.accessToken.split('.')[1]))
+        return (
+          payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] ||
+          payload['unique_name'] ||
+          payload['name'] ||
+          payload['sub'] ||
+          ''
+        )
+      } catch {
+        return ''
+      }
+    }
   },
 
   actions: {
@@ -32,7 +51,12 @@ export const useAuthStore = defineStore('auth', {
         localStorage.setItem('accessToken', result.accessToken)
         localStorage.setItem('refreshToken', result.refreshToken)
 
+        toast.success(response.data.message || 'Welcome back!')
+
         return response.data
+      } catch (error) {
+        toast.error(getApiErrorMessage(error, 'Unable to sign in. Please try again.'))
+        throw error
       } finally {
         this.loading = false
       }
@@ -52,18 +76,35 @@ export const useAuthStore = defineStore('auth', {
         localStorage.setItem('accessToken', result.accessToken)
         localStorage.setItem('refreshToken', result.refreshToken)
 
+        toast.success(response.data.message || 'Your account has been created.')
+
         return response.data
+      } catch (error) {
+        toast.error(getApiErrorMessage(error, 'Unable to create your account. Please try again.'))
+        throw error
       } finally {
         this.loading = false
       }
     },
 
-    logout() {
-      this.accessToken = ''
-      this.refreshToken = ''
+    async logout() {
+      const refreshToken = this.refreshToken
 
-      localStorage.removeItem('accessToken')
-      localStorage.removeItem('refreshToken')
+      try {
+        if (refreshToken) {
+          await authService.logout(refreshToken)
+        }
+
+        toast.success('You have been signed out.')
+      } catch (error) {
+        toast.warning('You were signed out locally, but the server could not be reached.')
+      } finally {
+        this.accessToken = ''
+        this.refreshToken = ''
+
+        localStorage.removeItem('accessToken')
+        localStorage.removeItem('refreshToken')
+      }
     },
 
     initialize() {

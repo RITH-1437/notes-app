@@ -249,6 +249,7 @@ Project documentation is available in the **docs/** directory.
 
 - phase1.md
 - phase2.md
+- phase3-frontend.md
 
 ---
 

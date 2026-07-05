@@ -2,11 +2,14 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
 import AuthLayout from '@/layouts/AuthLayout.vue'
-import AppLayout from '@/layouts/AppLayout.vue'
+import DashboardLayout from '@/layouts/DashboardLayout.vue'
 
 import LoginPage from '@/pages/auth/LoginPage.vue'
 import RegisterPage from '@/pages/auth/RegisterPage.vue'
 import DashboardPage from '@/pages/DashboardPage.vue'
+import NotesPage from '@/pages/notes/NotesPage.vue'
+import TagsPage from '@/pages/tags/TagsPage.vue'
+import NotFoundPage from '@/pages/NotFoundPage.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -14,7 +17,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      component: AppLayout,
+      component: DashboardLayout,
       children: [
         {
           path: '',
@@ -43,6 +46,33 @@ const router = createRouter({
           component: RegisterPage
         }
       ]
+    },
+
+    {
+      path: '/notes',
+      component: DashboardLayout,
+      children: [
+        {
+          path: '',
+          component: NotesPage
+        }
+      ]
+    },
+
+    {
+      path: '/tags',
+      component: DashboardLayout,
+      children: [
+        {
+          path: '',
+          component: TagsPage
+        }
+      ]
+    },
+
+    {
+      path: '/:pathMatch(.*)*',
+      component: NotFoundPage
     }
   ]
 })

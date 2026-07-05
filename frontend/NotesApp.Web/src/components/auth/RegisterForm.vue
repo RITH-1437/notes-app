@@ -96,9 +96,10 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { AxiosError } from 'axios'
+import { toast } from 'vue-sonner'
 
 import { useAuthStore } from '@/stores/auth'
+import { getApiErrorMessage } from '@/utils/api-error'
 
 const router = useRouter()
 const auth = useAuthStore()
@@ -122,21 +123,16 @@ async function handleRegister() {
 
   if (form.password !== confirmPassword.value) {
     error.value = 'Passwords do not match.'
+    toast.error(error.value)
     return
   }
 
   try {
     await auth.register(form)
 
-    router.push('/')
+    await router.push('/')
   } catch (err) {
-    if (err instanceof AxiosError) {
-      error.value =
-        err.response?.data?.message ??
-        'Registration failed.'
-    } else {
-      error.value = 'Something went wrong.'
-    }
+    error.value = getApiErrorMessage(err, 'Unable to create your account. Please try again.')
   }
 }
 </script>
