@@ -428,14 +428,11 @@ Full Stack Developer Student
 
 The long-term goal is to evolve **NotesApp** into a production-ready full-stack application featuring:
 
-- Authentication & Authorization
 - Rich Notes Management
 - Tag Organization
 - Advanced Search & Filtering
-- Responsive Vue Dashboard
 - Docker Deployment
 - Azure Cloud Hosting
 - CI/CD Automation
 - Unit & Integration Testing
 - Production Logging
-- Clean, Maintainable Architecture
