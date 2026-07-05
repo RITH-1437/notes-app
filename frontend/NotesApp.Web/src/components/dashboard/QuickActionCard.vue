@@ -14,8 +14,8 @@
     </div>
 
     <div
-  class="flex h-14 w-14 items-center justify-center rounded-xl bg-indigo-100 text-2xl"
->
+      class="flex h-14 w-14 items-center justify-center rounded-xl bg-indigo-100 text-2xl"
+    >
       <slot />
     </div>
   </RouterLink>

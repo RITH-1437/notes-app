@@ -5,13 +5,14 @@
       class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
     >
       <div class="w-full max-w-xl rounded-2xl bg-white p-6 shadow-xl">
-        <!-- Header -->
         <div class="mb-6 flex items-center justify-between">
           <h2 class="text-2xl font-bold">
             {{ mode === 'create' ? 'Create Note' : 'Edit Note' }}
           </h2>
 
           <button
+            type="button"
+            aria-label="Close modal"
             class="text-gray-400 transition hover:text-gray-700"
             @click="close"
           >
@@ -19,31 +20,33 @@
           </button>
         </div>
 
-        <!-- Form -->
         <form
           class="space-y-5"
           @submit.prevent="submit"
         >
           <div>
-            <label class="mb-2 block text-sm font-medium">
+            <label for="noteTitle" class="mb-2 block text-sm font-medium">
               Title
             </label>
 
             <input
+              id="noteTitle"
               v-model="form.title"
               type="text"
               class="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-indigo-500"
               placeholder="Enter note title"
+              autocomplete="off"
               required
             />
           </div>
 
           <div>
-            <label class="mb-2 block text-sm font-medium">
+            <label for="noteContent" class="mb-2 block text-sm font-medium">
               Content
             </label>
 
             <textarea
+              id="noteContent"
               v-model="form.content"
               rows="6"
               class="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-indigo-500"
@@ -53,11 +56,12 @@
           </div>
 
           <div>
-            <label class="mb-2 block text-sm font-medium">
+            <label for="noteTag" class="mb-2 block text-sm font-medium">
               Tag
             </label>
 
             <select
+              id="noteTag"
               v-model="form.tagId"
               class="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-indigo-500"
             >
@@ -75,7 +79,6 @@
             </select>
           </div>
 
-          <!-- Footer -->
           <div class="flex justify-end gap-3 pt-2">
             <button
               type="button"
@@ -140,8 +143,6 @@ watch(
   () => props.show,
   async (visible) => {
     if (!visible) return
-
-    await tagStore.getAll()
 
     if (props.mode === 'edit' && props.note) {
       form.title = props.note.title

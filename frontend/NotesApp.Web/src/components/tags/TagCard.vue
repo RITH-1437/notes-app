@@ -19,6 +19,8 @@
     <div class="mt-6 border-t border-gray-100 pt-4">
       <div class="flex justify-end gap-2">
         <button
+          type="button"
+          :aria-label="`Edit tag: ${tag.name}`"
           class="rounded-lg bg-blue-50 px-4 py-2 text-sm font-medium text-blue-600 transition hover:bg-blue-100"
           @click="emit('edit', tag)"
         >
@@ -26,6 +28,8 @@
         </button>
 
         <button
+          type="button"
+          :aria-label="`Delete tag: ${tag.name}`"
           class="rounded-lg bg-red-50 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-100"
           @click="emit('delete', tag)"
         >
@@ -37,14 +41,17 @@
 </template>
 
 <script setup lang="ts">
-import type { Tag } from '@/types/tag'
-
 defineProps<{
-  tag: Tag
+  tag: {
+    id: string
+    name: string
+    createdAt: string
+    updatedAt: string | null
+  }
 }>()
 
 const emit = defineEmits<{
-  edit: [tag: Tag]
-  delete: [tag: Tag]
+  edit: [tag: { id: string, name: string, createdAt: string, updatedAt: string | null }]
+  delete: [tag: { id: string, name: string, createdAt: string, updatedAt: string | null }]
 }>()
 </script>

@@ -1,34 +1,30 @@
 <template>
-  <div
-    class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg"
+  <RouterLink
+    :to="`/notes`"
+    :aria-label="`View note: ${note.title}`"
+    role="link"
+    class="block rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
   >
     <h3 class="font-semibold text-purple-700">
       {{ note.title }}
     </h3>
 
-    <p class="mt-2 min-h-[42px] line-clamp-2 text-sm text-gray-500">
+    <p class="mt-2 min-h-[40px] line-clamp-2 text-sm text-gray-500">
       {{ note.content }}
     </p>
-
-    <p class="mt-4 text-xs text-gray-400">
-      {{ formatDate(note.updatedAt ?? note.createdAt) }}
-    </p>
-  </div>
+  </RouterLink>
 </template>
 
 <script setup lang="ts">
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
-
-import type { Note } from '@/types/note'
-
-dayjs.extend(relativeTime)
-
 defineProps<{
-  note: Note
+  note: {
+    id: string
+    title: string
+    content: string
+    tagId: string | null
+    tagName: string | null
+    createdAt: string
+    updatedAt: string | null
+  }
 }>()
-
-function formatDate(date: string | Date) {
-  return dayjs(date).fromNow()
-}
 </script>

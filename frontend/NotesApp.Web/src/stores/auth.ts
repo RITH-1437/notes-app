@@ -22,12 +22,12 @@ export const useAuthStore = defineStore('auth', {
     username: (state): string => {
       if (!state.accessToken) return ''
       try {
-        const payload = JSON.parse(atob(state.accessToken.split('.')[1]))
+        const payload = JSON.parse(atob(state.accessToken.split('.')[1]!))
         return (
-          payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] ||
-          payload['unique_name'] ||
-          payload['name'] ||
-          payload['sub'] ||
+          String(payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] ?? '') ||
+          String(payload['unique_name'] ?? '') ||
+          String(payload['name'] ?? '') ||
+          String(payload['sub'] ?? '') ||
           ''
         )
       } catch {
@@ -96,7 +96,7 @@ export const useAuthStore = defineStore('auth', {
         }
 
         toast.success('You have been signed out.')
-      } catch (error) {
+      } catch {
         toast.warning('You were signed out locally, but the server could not be reached.')
       } finally {
         this.accessToken = ''

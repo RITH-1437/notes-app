@@ -5,10 +5,6 @@
       <h1 class="text-4xl font-bold text-gray-900">
         {{ greeting }} <HandRaisedIcon class="inline-block h-9 w-9 align-middle" />
       </h1>
-
-      <p class="mt-2 text-gray-500">
-        Welcome back! Here's an overview of your workspace.
-      </p>
     </div>
 
     <!-- Error -->

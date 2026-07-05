@@ -1,6 +1,7 @@
 <template>
   <select
     :value="modelValue"
+    aria-label="Filter notes by tag"
     class="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-indigo-500 md:w-64"
     @change="updateValue"
   >

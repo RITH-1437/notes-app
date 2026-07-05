@@ -32,6 +32,7 @@
 
         <div class="mt-8 flex justify-end gap-3">
           <button
+            type="button"
             class="rounded-xl border px-5 py-2 hover:bg-gray-100"
             @click="emit('close')"
           >
@@ -39,6 +40,7 @@
           </button>
 
           <button
+            type="button"
             :disabled="loading"
             class="rounded-xl bg-red-600 px-5 py-2 text-white hover:bg-red-700 disabled:opacity-50"
             @click="remove"

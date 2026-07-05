@@ -15,9 +15,3 @@ export interface AuthData {
   refreshToken: string
   expiresAt: string
 }
-
-export interface ApiResponse<T> {
-  success: boolean
-  message: string
-  data: T
-}

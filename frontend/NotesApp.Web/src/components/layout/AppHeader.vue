@@ -4,7 +4,7 @@
   >
     <div>
       <h2 class="text-2xl font-bold text-gray-900">
-        Dashboard
+        {{ pageTitle }}
       </h2>
     </div>
 
@@ -51,17 +51,29 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { ArrowRightOnRectangleIcon } from '@heroicons/vue/24/outline'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
 const authStore = useAuthStore()
 const router = useRouter()
+const route = useRoute()
 
 const dropdownOpen = ref(false)
 
 const username = computed(() => authStore.username || 'User')
 const avatar = computed(() => username.value.charAt(0).toUpperCase())
+
+const pageTitle = computed(() => {
+  const titles: Record<string, string> = {
+    '/': 'Dashboard',
+    '/notes': 'Notes',
+    '/tags': 'Tags'
+  }
+
+  return titles[route.path] || 'NotesApp'
+})
 
 function toggleDropdown() {
   dropdownOpen.value = !dropdownOpen.value

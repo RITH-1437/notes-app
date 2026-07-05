@@ -21,14 +21,7 @@
       {{ note.content }}
     </p>
 
-    <div
-      class="mt-6 flex items-center justify-between border-t border-gray-100 pt-4"
-    >
-      <span class="text-xs text-gray-400">
-        {{ formatDate(note.updatedAt ?? note.createdAt) }}
-      </span>
-
-      <div class="flex gap-2">
+    <div class="flex gap-2">
         <button
           class="rounded-lg bg-blue-50 px-3 py-2 text-sm font-medium text-blue-600 transition hover:bg-blue-100"
           @click="emit('edit', note)"
@@ -42,18 +35,12 @@
         >
           Delete
         </button>
-      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
-
 import type { Note } from '@/types/note'
-
-dayjs.extend(relativeTime)
 
 defineProps<{
   note: Note
@@ -63,8 +50,4 @@ const emit = defineEmits<{
   edit: [note: Note]
   delete: [note: Note]
 }>()
-
-function formatDate(date: string | Date) {
-  return dayjs(date).fromNow()
-}
 </script>

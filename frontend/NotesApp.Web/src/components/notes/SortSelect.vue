@@ -1,6 +1,7 @@
 <template>
   <select
     :value="modelValue"
+    aria-label="Sort notes"
     class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 outline-none transition focus:border-indigo-500 md:w-56"
     @change="updateValue"
   >

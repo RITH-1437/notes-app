@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { toast } from 'vue-sonner'
 
 import tagService from '@/services/tag.service'
+import { getApiErrorMessage } from '@/utils/api-error'
 
 import type {
   Tag,
@@ -23,12 +24,10 @@ export const useTagStore = defineStore('tag', () => {
       const response = await tagService.getAll()
 
       tags.value = response.data.data
-    } catch (err: any) {
-      error.value =
-        err.response?.data?.message ??
-        'Unable to load tags.'
+    } catch (err) {
+      const message = getApiErrorMessage(err, 'Unable to load tags.')
 
-      toast.error(error.value)
+      toast.error(message)
     } finally {
       loading.value = false
     }
@@ -43,11 +42,8 @@ export const useTagStore = defineStore('tag', () => {
       toast.success('Tag created successfully.')
 
       await getAll()
-    } catch (err: any) {
-      toast.error(
-        err.response?.data?.message ??
-        'Unable to create tag.'
-      )
+    } catch (err) {
+      toast.error(getApiErrorMessage(err, 'Unable to create tag.'))
     } finally {
       loading.value = false
     }
@@ -65,11 +61,8 @@ export const useTagStore = defineStore('tag', () => {
       toast.success('Tag updated successfully.')
 
       await getAll()
-    } catch (err: any) {
-      toast.error(
-        err.response?.data?.message ??
-        'Unable to update tag.'
-      )
+    } catch (err) {
+      toast.error(getApiErrorMessage(err, 'Unable to update tag.'))
     } finally {
       loading.value = false
     }
@@ -84,11 +77,8 @@ export const useTagStore = defineStore('tag', () => {
       toast.success('Tag deleted successfully.')
 
       await getAll()
-    } catch (err: any) {
-      toast.error(
-        err.response?.data?.message ??
-        'Unable to delete tag.'
-      )
+    } catch (err) {
+      toast.error(getApiErrorMessage(err, 'Unable to delete tag.'))
     } finally {
       loading.value = false
     }

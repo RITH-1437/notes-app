@@ -3,9 +3,10 @@ import api from '@/api/axios'
 import type {
   LoginRequest,
   RegisterRequest,
-  AuthData,
-  ApiResponse
+  AuthData
 } from '@/types/auth'
+
+import type { ApiResponse } from '@/types/api'
 
 export default {
   login(data: LoginRequest) {
