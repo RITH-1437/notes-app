@@ -1,8 +1,8 @@
 # 📝 NotesApp
 
-A full-stack Notes application built as a technical assessment using **ASP.NET Core 8 Web API**, **Dapper**, **SQL Server**, and **Vue 3**.
+A modern full-stack Notes application built with **ASP.NET Core 8 Web API**, **Dapper**, **SQL Server**, and **Vue 3**.
 
-The project follows the **Repository-Service Pattern** and focuses on clean architecture, secure authentication, RESTful API development, and modern full-stack best practices.
+The project follows the **Repository-Service Pattern** and demonstrates clean architecture, secure authentication, RESTful API development, and modern frontend engineering practices.
 
 ---
 
@@ -16,15 +16,18 @@ The project follows the **Repository-Service Pattern** and focuses on clean arch
 - JWT Authentication
 - Refresh Token
 - BCrypt Password Hashing
+- FluentValidation
 - Swagger / OpenAPI
 
 ## Frontend
 
 - Vue 3
 - TypeScript
-- Tailwind CSS
+- Vite
+- Vue Router
 - Pinia
 - Axios
+- Tailwind CSS
 
 ---
 
@@ -52,13 +55,23 @@ NotesApp/
 
 # 📊 Current Status
 
-🚧 Backend API is feature-complete for the core Notes module and continues to evolve with validation, middleware, frontend integration, and deployment.
+### ✅ Backend
+
+The backend is feature-complete for the core Notes module, including authentication, notes management, tags, validation, search, filtering, sorting, and global exception handling.
+
+### 🚧 Frontend
+
+Authentication module is completed.
+
+Dashboard, Notes Management, and Tags Management are currently under development.
 
 ---
 
 # ✅ Completed Features
 
 ## 🔐 Authentication
+
+### Backend
 
 - JWT Authentication
 - Refresh Token Authentication
@@ -68,6 +81,20 @@ NotesApp/
 - User Logout
 - Protected Endpoints
 - Swagger JWT Authorization
+
+### Frontend
+
+- Login Page
+- Register Page
+- Authentication Layout
+- JWT Authentication
+- Pinia Authentication Store
+- Route Guards
+- Protected Routes
+- Token Persistence
+- Logout
+- Axios Request Interceptor
+- Axios Response Interceptor
 
 ---
 
@@ -81,8 +108,8 @@ NotesApp/
 - Search Notes
 - Search by Title
 - Search by Content
-- Filter Notes by Tag
-- Sort Notes
+- Filter by Tag
+- Dynamic Sorting
 - User-specific Notes
 
 ---
@@ -98,36 +125,53 @@ NotesApp/
 
 ---
 
-## 🔗 Notes & Tags Integration
+## 🔗 Notes & Tags
 
 - Assign Tag to Note
 - Remove Tag from Note
 - Nullable Tag Support
 - Retrieve Tag Name with Notes
-- SQL LEFT JOIN Integration
+- SQL LEFT JOIN
 - Tag Ownership Validation
 
 ---
 
-## 🌐 API Features
+## 🌐 Backend Features
 
 - RESTful API
-- JWT Authentication
-- Swagger Documentation
 - Repository-Service Pattern
 - Dependency Injection
-- Dapper Data Access
-- Soft Delete Strategy
+- Dapper
+- SQL Server
+- Soft Delete
 - Search & Filtering
 - Dynamic Sorting
 - User Data Isolation
 - FluentValidation
 - Global Exception Middleware
 - Custom Exceptions
+- Standard API Response
 - Consistent Error Responses
 
 ---
 
+## 💻 Frontend Features
+
+- Vue 3 Project Setup
+- Vite
+- Vue Router
+- Pinia
+- Axios API Client
+- Authentication Service
+- Authentication Store
+- Login & Register Pages
+- Route Guards
+- JWT Persistence
+- Logout
+- TypeScript Models
+- Responsive Authentication Layout
+
+---
 
 # 🔒 Security
 
@@ -144,38 +188,67 @@ NotesApp/
 
 # 🏗 Architecture
 
+## Backend
+
 ```text
 Client
-   │
-   ▼
+    │
+    ▼
 Controllers
-   │
-   ▼
+    │
+    ▼
 Services
-   │
-   ▼
+    │
+    ▼
 Repositories
-   │
-   ▼
+    │
+    ▼
 Dapper
-   │
-   ▼
+    │
+    ▼
 SQL Server
+```
+
+## Frontend
+
+```text
+Pages
+    │
+    ▼
+Pinia Store
+    │
+    ▼
+Services
+    │
+    ▼
+Axios Client
+    │
+    ▼
+ASP.NET Core API
 ```
 
 ---
 
 # 📂 Documentation
 
-Project documentation is available inside the **docs/** directory.
+Project documentation is available in the **docs/** directory.
+
+## Backend
 
 - authentication.md
 - notes.md
 - tags.md
 - note-tag.md
 - search.md
+- validation.md
+- phase6.md
 - setup.md
 - tree.md
+
+## Frontend
+
+- phase1.md
+- phase2.md
 
 ---
 
@@ -183,47 +256,76 @@ Project documentation is available inside the **docs/** directory.
 
 ## ✅ Completed
 
+### Backend
+
 - JWT Authentication
 - Refresh Token
 - BCrypt Password Hashing
 - Swagger Authorization
 - Notes CRUD
 - Tags CRUD
-- Notes ↔ Tags Integration
-- Search Notes
+- Notes ↔ Tags
+- Search
 - Filter by Tag
 - Dynamic Sorting
 - Repository-Service Pattern
-- Soft Delete Strategy
+- Soft Delete
 - FluentValidation
 - Custom Exceptions
 - Global Exception Middleware
+- Standard API Response
+
+### Frontend
+
+- Vue 3 Project Setup
+- Folder Architecture
+- Vue Router
+- Pinia
+- Axios Client
+- Authentication Service
+- Authentication Store
+- Login
+- Register
+- Logout
+- Route Guards
+- JWT Persistence
+- Axios Interceptors
 
 ---
 
 ## 🚧 In Progress
 
-- Standard API Response
-- Logging
+### Frontend
+
+- Dashboard Layout
+- Notes Module
+- Tags Module
 
 ---
 
 ## 📌 Planned
 
+### Frontend
+
+- Notes CRUD UI
+- Tags CRUD UI
+- Search
+- Filter
+- Sort
+- Dashboard Widgets
+- Responsive Layout
+- Dark Mode
+- Toast Notifications
+- User Profile
+
 ### Backend
 
+- Structured Logging
 - Docker Support
 - Unit Testing
 - Integration Testing
-- CI/CD Pipeline
+- CI/CD
 - Azure Deployment
-
-### Frontend
-
-- Vue 3 Authentication
-- Notes Dashboard
-- Tag Management
-- Responsive UI
 
 ---
 
@@ -233,6 +335,7 @@ Project documentation is available inside the **docs/** directory.
 
 ```bash
 git clone https://github.com/your-username/NotesApp.git
+
 cd NotesApp
 ```
 
@@ -253,7 +356,7 @@ dotnet run
 Swagger
 
 ```text
-https://localhost:xxxx/swagger
+http://localhost:5013/swagger
 ```
 
 ---
@@ -268,24 +371,37 @@ npm install
 npm run dev
 ```
 
+Application
+
+```text
+http://localhost:5173
+```
+
 ---
 
 # 🎯 Project Goals
 
-This project is being developed phase by phase to demonstrate professional software engineering practices, including:
+This project is being developed incrementally to demonstrate professional full-stack software engineering practices.
+
+## Backend
 
 - Clean Architecture
 - Repository-Service Pattern
 - RESTful API Development
-- JWT Authentication
+- Authentication & Authorization
 - SQL Server Database Design
-- Secure Backend Development
-- Modern Frontend Development
-- Documentation-Driven Development
-- Git Version Control
-- Production-ready Coding Standards
+- Secure API Development
 
-Each completed phase is documented inside the **docs/** directory before moving to the next milestone.
+## Frontend
+
+- Modern Vue 3 Architecture
+- Component-Based Development
+- State Management with Pinia
+- API Integration with Axios
+- Responsive User Experience
+- Type Safety with TypeScript
+
+Every completed phase is documented inside the **docs/** directory before moving to the next milestone.
 
 ---
 
@@ -295,29 +411,37 @@ Each completed phase is documented inside the **docs/** directory before moving 
 
 Full Stack Developer Student
 
-### Technologies
+### Backend
 
 - ASP.NET Core
-- SQL Server
 - Dapper
-- Vue.js
-- TypeScript
+- SQL Server
+- MySQL
 - Laravel
 - Spring Boot
-- MySQL
+
+### Frontend
+
+- Vue.js
+- TypeScript
+- Tailwind CSS
+- Pinia
+- Axios
 
 ---
 
 # ⭐ Future Vision
 
-The long-term goal is to transform **NotesApp** into a production-ready full-stack application featuring:
+The long-term goal is to evolve **NotesApp** into a production-ready full-stack application featuring:
 
 - Authentication & Authorization
-- Rich Note Management
-- Smart Search
-- Responsive Vue Frontend
+- Rich Notes Management
+- Tag Organization
+- Advanced Search & Filtering
+- Responsive Vue Dashboard
 - Docker Deployment
-- Cloud Hosting
+- Azure Cloud Hosting
 - CI/CD Automation
-- Comprehensive Testing
+- Unit & Integration Testing
+- Production Logging
 - Clean, Maintainable Architecture

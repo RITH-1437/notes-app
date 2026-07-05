@@ -33,6 +33,18 @@ var jwtSettings = builder.Configuration
 // Services
 // ==============================
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("VuePolicy", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddFluentValidationAutoValidation();
 
@@ -127,6 +139,8 @@ if (app.Environment.IsDevelopment())
 }
 
 // app.UseHttpsRedirection();
+app.UseRouting();
+app.UseCors("VuePolicy");
 
 app.UseMiddleware<ExceptionMiddleware>();
 
